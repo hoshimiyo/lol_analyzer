@@ -1,0 +1,4 @@
+# backend/requirements-dev.txt
+-r requirements.txt
+pytest
+pytest-asyncio
