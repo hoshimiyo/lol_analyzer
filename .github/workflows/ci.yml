@@ -105,7 +105,12 @@ jobs:
       - name: Trigger Render deploy
         env:
           HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-        run: curl -fsS -X POST "$HOOK"
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::RENDER_DEPLOY_HOOK_URL is not set (check repository secrets)"
+            exit 1
+          fi
+          curl -fsS -X POST "$HOOK"
       - name: Wait for the live app
         env:
           APP_URL: ${{ vars.APP_URL }}
