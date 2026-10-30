@@ -105,7 +105,14 @@ jobs:
       - name: Trigger Render deploy
         env:
           HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-        run: curl -fsS -X POST "$HOOK"
+        run: |
+          HOOK="$(printf '%s' "$HOOK" | tr -d '[:space:]')"
+          echo "hook length: ${#HOOK}"
+          case "$HOOK" in
+            https://api.render.com/deploy/*) echo "format looks right" ;;
+            *) echo "::error::RENDER_DEPLOY_HOOK_URL is empty or malformed"; exit 1 ;;
+          esac
+          curl -fsS -X POST "$HOOK"
       - name: Wait for the live app
         env:
           APP_URL: ${{ vars.APP_URL }}

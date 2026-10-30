@@ -3,6 +3,7 @@
 Search a League of Legends player and see their recent ranked games as stats and
 charts: win rate, KDA trend, CS/min, most-played champions, and win rate by time of day.
 
+[![CI/CD](https://github.com/hoshimiyo/lol_analyzer/actions/workflows/ci.yml/badge.svg)](https://github.com/hoshimiyo/lol_analyzer/actions/workflows/ci.yml)
 ![Dashboard](docs/dashboard.png)
 ![Filters and charts](docs/charts.png)
 
