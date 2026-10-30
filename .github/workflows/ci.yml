@@ -106,10 +106,12 @@ jobs:
         env:
           HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          if [ -z "$HOOK" ]; then
-            echo "::error::RENDER_DEPLOY_HOOK_URL is not set (check repository secrets)"
-            exit 1
-          fi
+          HOOK="$(printf '%s' "$HOOK" | tr -d '[:space:]')"
+          echo "hook length: ${#HOOK}"
+          case "$HOOK" in
+            https://api.render.com/deploy/*) echo "format looks right" ;;
+            *) echo "::error::RENDER_DEPLOY_HOOK_URL is empty or malformed"; exit 1 ;;
+          esac
           curl -fsS -X POST "$HOOK"
       - name: Wait for the live app
         env:
